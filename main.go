@@ -4,9 +4,10 @@ import (
 	"os"
 	"image"
 	"errors"
+	"io"
 	"golang.org/x/image/bmp"
 	"encoding/binary"
-	"le-blc.com/motologo/motorun"
+	"github.com/motologo/motorun"
 )
 
 type MotologoHeader struct { // 11 bits
@@ -35,7 +36,14 @@ func check(e error) {
 	}
 }
 
-func parseMotologoFile(f *os.File) (Motologo, error) {
+func EncodeMotologo(w io.Writer, m Motologo) error {
+	if err := binary.Write(w, binary.LittleEndian, m); err != nil {
+		return err
+	}
+	return nil
+}
+
+func DecodeMotologoFile(f *os.File) (Motologo, error) {
 	var motologo Motologo
 
 	err := binary.Read(f, binary.LittleEndian, &motologo.Header)
@@ -67,7 +75,7 @@ func parseMotologoFile(f *os.File) (Motologo, error) {
 	return motologo, nil
 }
 
-func testDecode() {
+func testDecodeMotorun() {
 	f, err := os.Open("./test/logo_battery.motorun")
 	check(err)
 
@@ -87,7 +95,7 @@ func testDecode() {
 	check(err)
 }
 
-func testEncode() {
+func testEncodeMotorun() {
 	f, err := os.Open("./test/logo_battery.bmp")
 	check(err)
 
@@ -110,7 +118,7 @@ func testEncode() {
 func main() {
 	f, err := os.Open("./test/logo_a.bin")
 	check(err)
-	parseMotologoFile(f)
+	DecodeMotologoFile(f)
 	err = f.Close()
 	check(err)
 }
