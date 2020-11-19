@@ -31,7 +31,6 @@ type MotorunMeta struct { // 32 bits
 
 func check(e error) {
 	if e != nil {
-		//log.Fatal(e.Error())
 		panic(e)
 	}
 }
@@ -75,45 +74,7 @@ func DecodeMotologoFile(f *os.File) (Motologo, error) {
 	return motologo, nil
 }
 
-func testDecodeMotorun() {
-	f, err := os.Open("./test/logo_battery.motorun")
-	check(err)
 
-	img, err := motorun.Decode(f)
-	check(err)
-
-	out, err := os.Create("./test/testDecode_logo_battery.bmp")
-	check(err)
-
-	err = bmp.Encode(out, img)
-	check(err)
-
-	err = f.Close()
-	check(err)
-
-	err = out.Close()
-	check(err)
-}
-
-func testEncodeMotorun() {
-	f, err := os.Open("./test/logo_battery.bmp")
-	check(err)
-
-	img, err := bmp.Decode(f)
-	check(err)
-
-	out, err := os.Create("./test/testEncode_logo_battery.motorun")
-	check(err)
-
-	err = motorun.Encode(out, img)
-	check(err)
-
-	err = f.Close()
-	check(err)
-
-	err = out.Close()
-	check(err)
-}
 
 func main() {
 	f, err := os.Open("./test/logo_a.bin")
