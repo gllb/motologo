@@ -14,7 +14,7 @@ func readUint16(b []byte) uint16 {
 
 // Decode reads a Motorun image from r and returns it as an image.Image.
 func Decode(r io.Reader) (image.Image, error) {
-	c, err := decodeConfig(r)
+	c, err := DecodeConfig(r)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +77,7 @@ func Decode(r io.Reader) (image.Image, error) {
 // DecodeConfig returns the color model and dimensions of motorun image without
 // decoding the entire image.
 // Limitation: Color model can only be RGBA.
-func decodeConfig(r io.Reader) (config image.Config, err error) {
+func DecodeConfig(r io.Reader) (config image.Config, err error) {
 	var b [12]byte
 	if _, err := io.ReadFull(r, b[:]); err != nil {
 		if err == io.EOF {
