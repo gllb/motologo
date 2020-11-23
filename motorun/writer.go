@@ -18,7 +18,6 @@ type header struct {
 func encodeRow(w io.Writer, row []color.Color) error {
 	var stream bytes.Buffer
 	j := 0
-
 	for j < len(row) {
 		k := j
 		for k < len(row) && row[j] == row[k] {
@@ -99,7 +98,7 @@ func Encode(w io.Writer, m image.Image) error {
 		return err
 	}
 
-	row := make([]color.Color, d.Y)
+	row := make([]color.Color, d.X)
 	for y := 0; y < d.Y; y++ {
 		for x := 0; x < d.X; x++ {
 			row[x] = m.At(x, y)
