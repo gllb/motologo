@@ -3,6 +3,7 @@ package motorun
 import (
 	"os"
 	"golang.org/x/image/bmp"
+	"testing"
 )
 
 func check(e error) {
@@ -11,7 +12,7 @@ func check(e error) {
 	}
 }
 
-func TestEncode() {
+func TestEncode(t *testing.T) {
 	f, err := os.Open("./test/logo_battery.bmp")
 	check(err)
 
@@ -21,7 +22,7 @@ func TestEncode() {
 	out, err := os.Create("./test/testEncode_logo_battery.motorun")
 	check(err)
 
-	err = motorun.Encode(out, img)
+	err = Encode(out, img)
 	check(err)
 
 	err = f.Close()

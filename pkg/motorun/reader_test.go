@@ -2,16 +2,11 @@ package motorun
 
 import (
 	"os"
+	"testing"
 	"golang.org/x/image/bmp"
 )
 
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
-func testDecodeMotorun() {
+func TestDecodeMotorun(t *testing.T) {
 	f, err := os.Open("./test/logo_battery.motorun")
 	check(err)
 
