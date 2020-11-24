@@ -14,8 +14,9 @@ import (
 func DecodeMotologoFile(f *os.File) (Motologo, error) {
 	var motologo Motologo
 
-	err := binary.Read(f, binary.LittleEndian, &motologo.Header)
-	check(err)
+	if err := binary.Read(f, binary.LittleEndian, &motologo.Header); err != nil {
+		return Motologo{}, err
+	}
 
 	if string(motologo.Header.Signature[:8]) != "MotoLogo" {
 
@@ -26,14 +27,19 @@ func DecodeMotologoFile(f *os.File) (Motologo, error) {
 	motologo.MotorunMetaSet = make([]MotorunMeta, motorunMetaCount)
 	motologo.MotorunSet = make([]bytes.Buffer, motorunMetaCount)
 
-	err = binary.Read(f, binary.LittleEndian, &motologo.MotorunMetaSet)
-	check(err)
+	if err := binary.Read(f, binary.LittleEndian, &motologo.MotorunMetaSet); err != nil {
+		return Motologo{}, err
+	}
 
 	for i, motorunMeta := range motologo.MotorunMetaSet {
-		_, err := f.Seek(int64(motorunMeta.Offset), 0)
-		check(err)
+		if _, err := f.Seek(int64(motorunMeta.Offset), 0); err != nil {
+			return Motologo{}, err
+		}
 
 		img, err := motorun.Decode(f)
+		if err != nil {
+			return Motologo{}, err
+		}
 		motorun.Encode(&motologo.MotorunSet[i], img)
 	}
 
