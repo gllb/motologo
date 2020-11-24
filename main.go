@@ -9,7 +9,7 @@ import (
 	"bytes"
 	"golang.org/x/image/bmp"
 	"encoding/binary"
-	"github.com/motologo/motorun"
+	"github.com/gllb/motologo/motorun"
 )
 
 var MOTOLOGO_FILE_LIST = [...]string {"logo_boot", "logo_battery", "logo_unlocked",
